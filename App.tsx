@@ -6,6 +6,7 @@ import TabOrderReceivingCenterScreen from "./src/screen/tabOrderReceivingCenterS
 import TabMineScreen from "./src/screen/tabMineScreen/TabMineScreen";
 import {View} from "react-native";
 import {Size} from "./src/tools/WindowTools";
+import {initUseNavigation} from "./src/tools/navigation/Navigation";
 
 const Tab = createBottomTabNavigator();
 const TabScreenOptions = {
@@ -14,22 +15,12 @@ const TabScreenOptions = {
 } as any
 
 function App() {
+    const navigationContainerRef = initUseNavigation();
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationContainerRef}>
             <Tab.Navigator
                 screenOptions={({route}) => ({
                     tabBarIcon: ({focused, color, size}) => {
-                        let iconName;
-
-                        if (route.name === 'Home') {
-                            iconName = focused
-                                ? 'ios-information-circle'
-                                : 'ios-information-circle-outline';
-                        } else if (route.name === 'Settings') {
-                            iconName = focused ? 'ios-list-box' : 'ios-list';
-                        }
-
-                        // You can return any component that you like here!
                         return (
                             <View
                                 style={{
