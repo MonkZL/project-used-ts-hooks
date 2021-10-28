@@ -11,7 +11,7 @@ import {initUseNavigation} from "./src/tools/navigation/Navigation";
 const Tab = createBottomTabNavigator();
 const TabScreenOptions = {
     headerTitleAlign: 'left',
-    headerTitleStyle: {fontSize: Size(18), color: '#333333'}
+    headerTitleStyle: {fontSize: Size(18), color: '#333333'},
 } as any
 
 function App() {
@@ -43,6 +43,7 @@ function App() {
                     tabBarInactiveTintColor: '#303133',
                     tabBarStyle: {backgroundColor: '#ffffff'},
                     tabBarLabelStyle: {fontSize: Size(10)},
+                    headerShadowVisible: false
                 })}>
                 <Tab.Screen name="TabOrderScreen" component={TabOrderScreen}
                             options={{
