@@ -137,15 +137,24 @@ const renderItem: ListRenderItem<OrderData> = ({item, index, separators}) => {
     }
 
     const renderSupplementary = () => {
-        if (item.hasExtraRepairing) {
-            return (
-                <View style={styles.supplementary_description_box}>
-                    <Text style={styles.supplementary_description_text}>{'附赠30天维保'}</Text>
-                    <Text style={styles.supplementary_description_text}>{'2019.07.25-08.24为维保期'}</Text>
-                </View>
-            )
+        if (!item.hasExtraRepairing) {
+            return null
         }
-        return null
+        return (
+            <View style={styles.supplementary_description_box}>
+                <Text style={styles.supplementary_description_text}>{'附赠30天维保'}</Text>
+                <Text style={styles.supplementary_description_text}>{'2019.07.25-08.24为维保期'}</Text>
+            </View>
+        )
+    }
+
+    const renderCancelTips = () => {
+        if (item.orderType !== orderTypes.canceled) {
+            return null
+        }
+        return (
+            <Text style={styles.cancel_tips_text}>{'服务已开始，客户取消订单，本单已补偿20元路费，辛苦师傅啦！'}</Text>
+        )
     }
 
     return (
@@ -181,6 +190,7 @@ const renderItem: ListRenderItem<OrderData> = ({item, index, separators}) => {
             {renderDescription('服务地址', item.serviceAddress)}
             {renderBtn()}
             {renderSupplementary()}
+            {renderCancelTips()}
         </View>
     )
 }
@@ -293,7 +303,8 @@ const styles = StyleSheet.create({
         color: '#303133',
         fontSize: Size(12),
         marginLeft: Size(18),
-        flex: 1
+        flex: 1,
+        lineHeight: Size(16.5)
     },
     btn_start_service: {
         width: '100%',
@@ -379,6 +390,12 @@ const styles = StyleSheet.create({
         color: '#909199',
         fontSize: Size(12)
     },
+    cancel_tips_text: {
+        color: '#FE4C4E',
+        fontSize: Size(12),
+        marginTop: Size(8),
+        lineHeight: Size(16.5)
+    }
 });
 
 export default TabOrderFragment;

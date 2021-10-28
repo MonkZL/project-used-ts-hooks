@@ -122,6 +122,15 @@ export const LocalOrderData = [
         serviceStartTime: '2019-09-09 14:00~18:00 ',
         serviceAddress: '四川省成都市双流区牧华路三段111号1栋1单元'
     },
+    {
+        id: '10',
+        orderType: orderTypes.canceled,
+        orderContent: ['厨卫洁具维修', '水管龙头维修', '厨卫洁具维修', '水管龙头维修'],
+        repairTips: '30天维保',
+        payMoney: 130,
+        serviceStartTime: '2019-09-09 14:00~18:00 ',
+        serviceAddress: '四川省成都市双流区牧华路三段111号1栋1单元'
+    }
 ] as OrderData[]
 
 export const LocalOrderDataFilter = (route: Route): OrderData[] => {
