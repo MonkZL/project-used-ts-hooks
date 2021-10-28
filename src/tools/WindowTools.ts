@@ -18,5 +18,5 @@ const DESIGN_HEIGHT = 732;
  * @constructor
  */
 export function Size(pt: number): number {
-    return pt * DESIGN_WIDTH / WINDOW_WIDTH
+    return pt * WINDOW_WIDTH / DESIGN_WIDTH
 }

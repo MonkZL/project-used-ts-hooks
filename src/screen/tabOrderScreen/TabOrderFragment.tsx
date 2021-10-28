@@ -200,8 +200,6 @@ const ItemSeparatorComponent = () => {
 }
 
 const renderList = (route: Route) => {
-
-
     return (
         <FlatList<OrderData>
             showsVerticalScrollIndicator={false}
@@ -212,7 +210,6 @@ const renderList = (route: Route) => {
             contentContainerStyle={styles.list}
         />
     )
-
 }
 
 function TabOrderFragment(prop: SceneRendererProps & { route: Route }) {
