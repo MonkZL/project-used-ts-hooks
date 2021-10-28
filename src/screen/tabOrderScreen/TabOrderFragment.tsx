@@ -2,7 +2,7 @@ import React from "react";
 import {FlatList, ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Route, SceneRendererProps} from "react-native-tab-view/src/types";
 import {Size, WINDOW_WIDTH} from "../../tools/WindowTools";
-import {LocalOrderData, OrderData, orderTypes} from "../../dataBean/OrderData";
+import {LocalOrderDataFilter, ongoingType, OrderData, orderTypes} from "../../dataBean/OrderData";
 
 const renderItem: ListRenderItem<OrderData> = ({item, index, separators}) => {
 
@@ -39,24 +39,113 @@ const renderItem: ListRenderItem<OrderData> = ({item, index, separators}) => {
     }
 
     const renderBtn = () => {
-        switch (item.orderType) {
-            case orderTypes.getSuccess:
-                return (
+
+        const renderGetSuccessBtn = () => {
+            return (
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={styles.btn_start_service}>
+                    <Text style={styles.btn_start_service_text}>{'开始服务'}</Text>
+                </TouchableOpacity>
+            )
+        }
+
+        const renderOngoingBtn = () => {
+            switch (item.ongoingType) {
+                case ongoingType.supplementaryPriceCan:
+                    return (
+                        <View style={styles.btn_service_ongoing_box}>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                style={styles.btn_supplementary_price}>
+                                <Text style={styles.btn_supplementary_price_text}>{'申请补价'}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                style={styles.btn_complete_service}>
+                                <Text style={styles.btn_complete_service_text}>{'服务完成'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                case ongoingType.supplementaryPriceNeed:
+                    return (
+                        <View style={styles.btn_service_ongoing_box}>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                style={styles.btn_supplementary_price}>
+                                <Text style={styles.btn_supplementary_price_text}>{'撤销补价'}</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                activeOpacity={0.5}
+                                style={styles.btn_complete_service}>
+                                <Text style={styles.btn_complete_service_text}>{'服务完成'}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )
+                case ongoingType.supplementaryPriceOver:
+                    return (
+                        <TouchableOpacity
+                            activeOpacity={0.5}
+                            style={styles.btn_complete_service_big}>
+                            <Text style={styles.btn_complete_service_text}>{'服务完成'}</Text>
+                        </TouchableOpacity>
+                    )
+                default:
+                    return null
+            }
+        }
+
+        const renderOverBtn = () => {
+            return (
+                <TouchableOpacity
+                    activeOpacity={0.5}
+                    style={styles.btn_view_evaluate}>
+                    <Text style={styles.btn_view_evaluate_text}>{'查看评价'}</Text>
+                </TouchableOpacity>
+            )
+        }
+
+        const renderRepairing = () => {
+            return (
+                <View style={styles.btn_service_ongoing_box}>
                     <TouchableOpacity
                         activeOpacity={0.5}
-                        style={styles.btn_start_service}>
-                        <Text style={styles.btn_start_service_text}>{'开始服务'}</Text>
+                        style={styles.btn_supplementary_price}>
+                        <Text style={styles.btn_supplementary_price_text}>{'查看评价'}</Text>
                     </TouchableOpacity>
-                )
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        style={styles.btn_complete_service}>
+                        <Text style={styles.btn_complete_service_text}>{'维保完成'}</Text>
+                    </TouchableOpacity>
+                </View>
+            )
+        }
+
+        switch (item.orderType) {
+            case orderTypes.getSuccess:
+                return renderGetSuccessBtn()
             case orderTypes.ongoing:
-                return (<View/>)
+                return renderOngoingBtn()
             case orderTypes.over:
-                return (<View/>)
+                return renderOverBtn()
             case orderTypes.repairing:
-                return (<View/>)
+                return renderRepairing()
             case orderTypes.canceled:
                 return (<View/>)
         }
+    }
+
+    const renderSupplementary = () => {
+        if (item.hasExtraRepairing) {
+            return (
+                <View style={styles.supplementary_description_box}>
+                    <Text style={styles.supplementary_description_text}>{'附赠30天维保'}</Text>
+                    <Text style={styles.supplementary_description_text}>{'2019.07.25-08.24为维保期'}</Text>
+                </View>
+            )
+        }
+        return null
     }
 
     return (
@@ -80,11 +169,18 @@ const renderItem: ListRenderItem<OrderData> = ({item, index, separators}) => {
                         })
                     }
                 </View>
-                <Text style={styles.pay_money_unit}>￥<Text style={styles.pay_money}>{item.payMoney}</Text></Text>
+                <View style={styles.price_box}>
+                    <Text style={styles.pay_money_unit}>￥<Text style={styles.pay_money}>{item.payMoney}</Text></Text>
+                    {
+                        item.supplementaryPrice && <Text
+                            style={styles.supplementary_price_text}>{`${item.ongoingType === ongoingType.supplementaryPriceNeed ? '需补' : '已补'}￥${item.supplementaryPrice}`}</Text>
+                    }
+                </View>
             </View>
             {renderDescription('服务时间', item.serviceStartTime)}
             {renderDescription('服务地址', item.serviceAddress)}
             {renderBtn()}
+            {renderSupplementary()}
         </View>
     )
 }
@@ -93,11 +189,13 @@ const ItemSeparatorComponent = () => {
     return <View style={styles.separator}/>
 }
 
-const renderList = () => {
+const renderList = (route: Route) => {
+
 
     return (
         <FlatList<OrderData>
-            data={LocalOrderData}
+            showsVerticalScrollIndicator={false}
+            data={LocalOrderDataFilter(route)}
             renderItem={renderItem}
             ItemSeparatorComponent={ItemSeparatorComponent}
             keyExtractor={(item, index) => item.id}
@@ -110,7 +208,7 @@ const renderList = () => {
 function TabOrderFragment(prop: SceneRendererProps & { route: Route }) {
     return (
         <View style={styles.container}>
-            {renderList()}
+            {renderList(prop.route)}
         </View>
     )
 
@@ -138,7 +236,8 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#303133',
-        fontSize: Size(17)
+        fontSize: Size(17),
+        fontWeight: '500'
     },
     repair_tips: {
         color: '#40B2FF',
@@ -177,10 +276,9 @@ const styles = StyleSheet.create({
     pay_money_unit: {
         color: '#303133',
         fontSize: Size(14),
-        marginTop: -Size(4),
+        fontWeight: 'bold'
     },
     pay_money: {
-        color: '#303133',
         fontSize: Size(26),
     },
     description_box: {
@@ -209,6 +307,77 @@ const styles = StyleSheet.create({
     btn_start_service_text: {
         color: '#FFFFFF',
         fontSize: Size(14)
+    },
+    btn_service_ongoing_box: {
+        flexDirection: 'row',
+        marginTop: Size(20)
+    },
+    btn_supplementary_price: {
+        flex: 1,
+        height: Size(34),
+        borderRadius: Size(3),
+        borderColor: '#40B2FF',
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    btn_supplementary_price_text: {
+        color: '#40B2FF',
+        fontSize: Size(14)
+    },
+    btn_complete_service: {
+        flex: 1,
+        height: Size(34),
+        borderRadius: Size(3),
+        backgroundColor: '#40B2FF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: Size(16)
+    },
+    btn_complete_service_text: {
+        color: '#FFFFFF',
+        fontSize: Size(14)
+    },
+    btn_complete_service_big: {
+        width: '100%',
+        height: Size(34),
+        borderRadius: Size(3),
+        backgroundColor: '#40B2FF',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Size(20)
+    },
+    price_box: {
+        alignItems: 'flex-end',
+    },
+    supplementary_price_text: {
+        color: '#FF6D9C',
+        fontSize: Size(12),
+        marginTop: Size(4)
+    },
+    btn_view_evaluate: {
+        width: '100%',
+        height: Size(34),
+        borderRadius: Size(3),
+        borderColor: '#40B2FF',
+        borderWidth: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: Size(20)
+    },
+    btn_view_evaluate_text: {
+        color: '#40B2FF',
+        fontSize: Size(14)
+    },
+    supplementary_description_box: {
+        flexDirection: 'row',
+        marginTop: Size(16),
+        width: '100%',
+        justifyContent: 'space-between'
+    },
+    supplementary_description_text: {
+        color: '#909199',
+        fontSize: Size(12)
     },
 });
 
