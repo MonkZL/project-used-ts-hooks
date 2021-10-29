@@ -4,9 +4,18 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import TabOrderScreen from "./src/screen/tabOrderScreen/TabOrderScreen";
 import TabOrderReceivingCenterScreen from "./src/screen/tabOrderReceivingCenterScreen/TabOrderReceivingCenterScreen";
 import TabMineScreen from "./src/screen/tabMineScreen/TabMineScreen";
-import {View} from "react-native";
+import {Image, View} from "react-native";
 import {Size} from "./src/tools/WindowTools";
 import {initUseNavigation} from "./src/tools/navigation/Navigation";
+import {
+    icon_mine,
+    icon_mine_active,
+    icon_order,
+    icon_order_active,
+    icon_order_receiving_center,
+    icon_order_receiving_center_active
+} from "./src/file/image/Images";
+import {RouteProp} from "@react-navigation/core/lib/typescript/src/types";
 
 const Tab = createBottomTabNavigator();
 const TabScreenOptions = {
@@ -16,33 +25,42 @@ const TabScreenOptions = {
 
 function App() {
     const navigationContainerRef = initUseNavigation();
+
+    const renderTabBarIcon = ({route, focused, color, size}: any) => {
+        let icon;
+        switch (route.name) {
+            case 'TabOrderScreen':
+                icon = focused ? icon_order_active : icon_order;
+                break;
+            case 'TabOrderReceivingCenterScreen':
+                icon = focused ? icon_order_receiving_center_active : icon_order_receiving_center;
+                break;
+            case 'TabMineScreen':
+                icon = focused ? icon_mine_active : icon_mine;
+                break;
+        }
+        return (
+            <Image
+                style={{
+                    width: Size(24),
+                    height: Size(24.5)
+                }}
+                source={icon}
+                resizeMode={'contain'}/>
+        );
+    }
+
     return (
         <NavigationContainer ref={navigationContainerRef}>
             <Tab.Navigator
                 screenOptions={({route}) => ({
                     tabBarIcon: ({focused, color, size}) => {
-                        return (
-                            <View
-                                style={{
-                                    height: '100%',
-                                    width: '100%',
-                                    alignItems: 'center',
-                                    justifyContent: 'flex-end'
-                                }}>
-                                <View
-                                    style={{
-                                        width: Size(24),
-                                        height: Size(24),
-                                        backgroundColor: color,
-                                        marginBottom: Size(5)
-                                    }}/>
-                            </View>
-                        );
+                        return renderTabBarIcon({route, focused, color, size})
                     },
                     tabBarActiveTintColor: '#40B2FF',
                     tabBarInactiveTintColor: '#303133',
-                    tabBarStyle: {backgroundColor: '#ffffff'},
-                    tabBarLabelStyle: {fontSize: Size(10)},
+                    tabBarStyle: {backgroundColor: '#ffffff', paddingHorizontal: Size(18)},
+                    tabBarLabelStyle: {fontSize: Size(10), top: -Size(5)},
                     headerShadowVisible: false
                 })}>
                 <Tab.Screen name="TabOrderScreen" component={TabOrderScreen}
