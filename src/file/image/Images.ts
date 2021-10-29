@@ -1,0 +1,9 @@
+export const bg_order_num = require('./bg_order_num.png');
+export const bg_wallet = require('./bg_wallet.png');
+export const icon_agreement = require('./icon_agreement.png');
+export const icon_bulb = require('./icon_bulb.png');
+export const icon_flag = require('./icon_flag.png');
+export const icon_frown = require('./icon_frown.png');
+export const icon_manual = require('./icon_manual.png');
+export const icon_mine_active = require('./icon_mine_active.png');
+export const icon_right_arrow = require('./icon_right_arrow.png');
