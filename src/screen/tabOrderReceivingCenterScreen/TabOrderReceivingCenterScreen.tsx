@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useReducer, useState} from "react";
 import {
     FlatList,
     Image,
@@ -11,13 +11,8 @@ import {
 } from "react-native";
 import styles from "./TabOrderReceivingCenterScreen.styles";
 import {bg_order_receiving_center, icon_frown, icon_right_arrow, img_invited} from "../../file/image/Images";
-import {
-    defaultOrderType,
-    LocalOrderDataFilter,
-    localOrderReceivingCenterData,
-    ongoingType,
-    OrderData
-} from "../../dataBean/OrderData";
+import {defaultOrderType, localOrderReceivingCenterData, OrderData} from "../../dataBean/OrderData";
+import OrderReceivingCenterModal from "../../view/orderReceivingCenterImageModal/OrderReceivingCenterModal";
 
 function TabOrderReceivingCenterScreen() {
 
@@ -114,6 +109,8 @@ function TabOrderReceivingCenterScreen() {
     const ItemSeparatorComponent = () => {
         return <View style={styles.separator}/>
     }
+
+    const [isModalVisible, setModalVisible] = useState(false);
     return (
         <View style={styles.container}>
             <Image source={bg_order_receiving_center} style={styles.banner} resizeMode={'cover'}/>
@@ -131,10 +128,14 @@ function TabOrderReceivingCenterScreen() {
                 showsVerticalScrollIndicator={false}
             />
             <TouchableOpacity
+                onPress={() => {
+                    setModalVisible(prevIsModalVisible => !prevIsModalVisible)
+                }}
                 style={styles.btn_invited}
                 activeOpacity={0.5}>
                 <Image source={img_invited} style={styles.img_invited} resizeMode={'contain'}/>
             </TouchableOpacity>
+            <OrderReceivingCenterModal isModalVisible={isModalVisible} setModalVisible={setModalVisible}/>
         </View>
     )
 }

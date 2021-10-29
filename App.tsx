@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import TabOrderScreen from "./src/screen/tabOrderScreen/TabOrderScreen";
 import TabOrderReceivingCenterScreen from "./src/screen/tabOrderReceivingCenterScreen/TabOrderReceivingCenterScreen";
 import TabMineScreen from "./src/screen/tabMineScreen/TabMineScreen";
-import {Image, View} from "react-native";
+import {Image} from "react-native";
 import {Size} from "./src/tools/WindowTools";
 import {initUseNavigation} from "./src/tools/navigation/Navigation";
 import {
@@ -15,7 +15,6 @@ import {
     icon_order_receiving_center,
     icon_order_receiving_center_active
 } from "./src/file/image/Images";
-import {RouteProp} from "@react-navigation/core/lib/typescript/src/types";
 
 const Tab = createBottomTabNavigator();
 const TabScreenOptions = {
