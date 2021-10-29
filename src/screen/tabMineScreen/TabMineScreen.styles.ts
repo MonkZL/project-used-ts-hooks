@@ -1,6 +1,5 @@
 import {StyleSheet} from 'react-native'
 import {Size, WINDOW_WIDTH} from "../../tools/WindowTools";
-import {bg_order_num} from "../../file/image/Images";
 
 const styles = StyleSheet.create({
     container: {

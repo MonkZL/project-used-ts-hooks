@@ -1,6 +1,7 @@
 import {Route} from "react-native-tab-view";
 
 export enum orderTypes {
+    default,//未接单
     getSuccess,//接单成功
     ongoing,//进行中
     over,//已结束
@@ -9,15 +10,22 @@ export enum orderTypes {
 }
 
 export enum ongoingType {
-    supplementaryPriceCan,
-    supplementaryPriceNeed,
-    supplementaryPriceOver
+    supplementaryPriceCan,//可以补款
+    supplementaryPriceNeed,//需要补款
+    supplementaryPriceOver//已补款
+}
+
+export enum defaultOrderType {
+    default,//初始状态
+    overOffer,//已报价
+    end,//已结束
 }
 
 export interface OrderData {
     id: string,
     orderType: orderTypes,
     ongoingType: ongoingType,
+    defaultOrderType: defaultOrderType,
     supplementaryPrice: number,
     orderContent: string[],
     repairTips: string,
@@ -161,3 +169,37 @@ export const LocalOrderDataFilter = (route: Route): OrderData[] => {
         }
     })
 }
+
+//接单大厅数据
+export const localOrderReceivingCenterData = [
+    {
+        id: '1',
+        orderType: orderTypes.default,
+        defaultOrderType: defaultOrderType.end,
+        orderContent: ['厨卫洁具维修', '水管龙头维修', '水管龙头维修', '厨卫洁具维修', '水管龙头维修', '水管龙头维修'],
+        repairTips: '30天维保',
+        payMoney: 130,
+        serviceStartTime: '2019-09-09 14:00~18:00 ',
+        serviceAddress: '四川省成都市双流区牧华路三段111号1栋1单元'
+    },
+    {
+        id: '1',
+        orderType: orderTypes.default,
+        defaultOrderType: defaultOrderType.overOffer,
+        orderContent: ['厨卫洁具维修', '水管龙头维修', '水管龙头维修', '厨卫洁具维修', '水管龙头维修'],
+        repairTips: '30天维保',
+        payMoney: 130,
+        serviceStartTime: '2019-09-09 14:00~18:00 ',
+        serviceAddress: '四川省成都市双流区牧华路三段111号1栋1单元'
+    },
+    {
+        id: '1',
+        orderType: orderTypes.default,
+        defaultOrderType: defaultOrderType.default,
+        orderContent: ['厨卫洁具维修', '水管龙头维修', '水管龙头维修', '厨卫洁具维修', '水管龙头维修'],
+        repairTips: '30天维保',
+        payMoney: 130,
+        serviceStartTime: '2019-09-09 14:00~18:00 ',
+        serviceAddress: '四川省成都市双流区牧华路三段111号1栋1单元'
+    }
+] as OrderData[];

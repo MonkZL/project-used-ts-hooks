@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
     container: {
         width: WINDOW_WIDTH,
         height: '100%',
+        backgroundColor: '#FAFAFA',
         alignItems: 'center'
     },
     list: {paddingVertical: Size(14.5)},
