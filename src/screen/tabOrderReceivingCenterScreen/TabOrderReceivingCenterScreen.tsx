@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from "react";
+import React, {createRef} from "react";
 import {
     FlatList,
     Image,
@@ -13,6 +13,8 @@ import styles from "./TabOrderReceivingCenterScreen.styles";
 import {bg_order_receiving_center, icon_frown, icon_right_arrow, img_invited} from "../../file/image/Images";
 import {defaultOrderType, localOrderReceivingCenterData, OrderData} from "../../dataBean/OrderData";
 import OrderReceivingCenterModal from "../../view/orderReceivingCenterImageModal/OrderReceivingCenterModal";
+import Modal from "react-native-modalbox";
+import {WINDOW_WIDTH} from "../../tools/WindowTools";
 
 function TabOrderReceivingCenterScreen() {
 
@@ -110,7 +112,9 @@ function TabOrderReceivingCenterScreen() {
         return <View style={styles.separator}/>
     }
 
-    const [isModalVisible, setModalVisible] = useState(false);
+
+    const refObject = createRef<Modal>();
+
     return (
         <View style={styles.container}>
             <Image source={bg_order_receiving_center} style={styles.banner} resizeMode={'cover'}/>
@@ -119,23 +123,25 @@ function TabOrderReceivingCenterScreen() {
                 {renderFilter(icon_right_arrow, '成都', {transform: [{rotateZ: '90deg'}]})}
                 {renderFilter(icon_right_arrow, '上门维修', {transform: [{rotateZ: '90deg'}]})}
             </View>
-            <FlatList<OrderData>
-                data={localOrderReceivingCenterData}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => item.id}
-                ItemSeparatorComponent={ItemSeparatorComponent}
-                contentContainerStyle={styles.list}
-                showsVerticalScrollIndicator={false}
-            />
+            <View style={{width: WINDOW_WIDTH, alignItems: 'center', flex: 1, overflow: 'hidden'}}>
+                <OrderReceivingCenterModal ref={refObject}/>
+                <FlatList<OrderData>
+                    data={localOrderReceivingCenterData}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => item.id}
+                    ItemSeparatorComponent={ItemSeparatorComponent}
+                    contentContainerStyle={styles.list}
+                    showsVerticalScrollIndicator={false}
+                />
+            </View>
             <TouchableOpacity
                 onPress={() => {
-                    setModalVisible(prevIsModalVisible => !prevIsModalVisible)
+                    refObject.current?.open()
                 }}
                 style={styles.btn_invited}
                 activeOpacity={0.5}>
                 <Image source={img_invited} style={styles.img_invited} resizeMode={'contain'}/>
             </TouchableOpacity>
-            <OrderReceivingCenterModal isModalVisible={isModalVisible} setModalVisible={setModalVisible}/>
         </View>
     )
 }

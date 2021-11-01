@@ -1,19 +1,31 @@
-import React from "react";
-import Modal from "react-native-modal";
-import {View} from "react-native";
-import styles from "./OrderReceivingCenterModal.styles";
+import React, {forwardRef, memo} from "react";
+import {Easing, Text, View} from "react-native";
 import {OrderReceivingCenterModalProps} from "./OrderReceivingCenterModal.props";
+import {WINDOW_WIDTH} from "../../tools/WindowTools";
+import Modal from "react-native-modalbox"
 
-function OrderReceivingCenterModal(props: OrderReceivingCenterModalProps) {
+function OrderReceivingCenterModal(props: OrderReceivingCenterModalProps, ref: any) {
+
     return (
         <Modal
-            onBackdropPress={() => props.setModalVisible(false)}
-            isVisible={props.isModalVisible}
-            style={styles.modal}>
-            <View style={{width: 100, height: 100, backgroundColor: 'red'}}/>
+            backdrop
+            backdropPressToClose
+            style={{backgroundColor: 'green', height: 300}}
+            entry={'top'}
+            position={"top"}
+            easing={Easing.linear}
+            ref={ref}>
+            <View
+                style={{
+                    width: WINDOW_WIDTH,
+                    height: 300,
+                    backgroundColor: "#FFFFFF"
+                }}>
+                <Text>13</Text>
+            </View>
         </Modal>
     )
 
 }
 
-export default OrderReceivingCenterModal;
+export default memo(forwardRef(OrderReceivingCenterModal));
