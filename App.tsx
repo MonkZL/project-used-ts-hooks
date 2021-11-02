@@ -15,6 +15,10 @@ import {
     icon_order_receiving_center,
     icon_order_receiving_center_active
 } from "./src/file/image/Images";
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
+import MyWalletScreen from "./src/screen/myWalletScreen/MyWalletScreen";
+
+const Stack = createNativeStackNavigator();
 
 const Tab = createBottomTabNavigator();
 const TabScreenOptions = {
@@ -22,8 +26,7 @@ const TabScreenOptions = {
     headerTitleStyle: {fontSize: Size(18), color: '#333333'},
 } as any
 
-function App() {
-    const navigationContainerRef = initUseNavigation();
+function Home() {
 
     const renderTabBarIcon = ({route, focused, color, size}: any) => {
         let icon;
@@ -50,37 +53,47 @@ function App() {
     }
 
     return (
+        <Tab.Navigator
+            screenOptions={({route}) => ({
+                tabBarIcon: ({focused, color, size}) => {
+                    return renderTabBarIcon({route, focused, color, size})
+                },
+                tabBarActiveTintColor: '#40B2FF',
+                tabBarInactiveTintColor: '#303133',
+                tabBarStyle: {backgroundColor: '#ffffff', paddingHorizontal: Size(18)},
+                tabBarLabelStyle: {fontSize: Size(10), top: -Size(5)},
+                headerShadowVisible: false
+            })}>
+            <Tab.Screen name="TabOrderScreen" component={TabOrderScreen}
+                        options={{
+                            ...TabScreenOptions,
+                            title: '维客先生',
+                            tabBarLabel: '订单',
+                        }}/>
+            <Tab.Screen name="TabOrderReceivingCenterScreen" component={TabOrderReceivingCenterScreen}
+                        options={{
+                            ...TabScreenOptions,
+                            title: '接单大厅',
+                            tabBarLabel: '接单大厅',
+                        }}/>
+            <Tab.Screen name="TabMineScreen" component={TabMineScreen}
+                        options={{
+                            ...TabScreenOptions,
+                            title: '我的',
+                            tabBarLabel: '我的',
+                        }}/>
+        </Tab.Navigator>
+    )
+}
+
+function App() {
+    const navigationContainerRef = initUseNavigation();
+    return (
         <NavigationContainer ref={navigationContainerRef}>
-            <Tab.Navigator
-                screenOptions={({route}) => ({
-                    tabBarIcon: ({focused, color, size}) => {
-                        return renderTabBarIcon({route, focused, color, size})
-                    },
-                    tabBarActiveTintColor: '#40B2FF',
-                    tabBarInactiveTintColor: '#303133',
-                    tabBarStyle: {backgroundColor: '#ffffff', paddingHorizontal: Size(18)},
-                    tabBarLabelStyle: {fontSize: Size(10), top: -Size(5)},
-                    headerShadowVisible: false
-                })}>
-                <Tab.Screen name="TabOrderScreen" component={TabOrderScreen}
-                            options={{
-                                ...TabScreenOptions,
-                                title: '维客先生',
-                                tabBarLabel: '订单',
-                            }}/>
-                <Tab.Screen name="TabOrderReceivingCenterScreen" component={TabOrderReceivingCenterScreen}
-                            options={{
-                                ...TabScreenOptions,
-                                title: '接单大厅',
-                                tabBarLabel: '接单大厅',
-                            }}/>
-                <Tab.Screen name="TabMineScreen" component={TabMineScreen}
-                            options={{
-                                ...TabScreenOptions,
-                                title: '我的',
-                                tabBarLabel: '我的',
-                            }}/>
-            </Tab.Navigator>
+            <Stack.Navigator>
+                <Stack.Screen name={'Home'} component={Home} options={{headerShown: false}}/>
+                <Stack.Screen name={'MyWalletScreen'} component={MyWalletScreen}/>
+            </Stack.Navigator>
         </NavigationContainer>
     );
 }

@@ -10,6 +10,7 @@ import {
     icon_manual,
     icon_right_arrow
 } from "../../file/image/Images";
+import {pushToMyWallet} from "../../tools/navigation/NavigationTools";
 
 function TabMineScreen() {
 
@@ -48,10 +49,16 @@ function TabMineScreen() {
                         <Text style={styles.order_num_title}>接单总数</Text>
                         <Text style={styles.order_num}>268单</Text>
                     </ImageBackground>
-                    <ImageBackground source={bg_wallet} resizeMode={'contain'} style={styles.bg_wallet_box}>
-                        <Text style={styles.bg_wallet_title}>我的钱包</Text>
-                        <Text style={styles.bg_wallet}>￥ 123234</Text>
-                    </ImageBackground>
+                    <TouchableOpacity
+                        activeOpacity={0.5}
+                        onPress={() => {
+                            pushToMyWallet({money: 123});
+                        }}>
+                        <ImageBackground source={bg_wallet} resizeMode={'contain'} style={styles.bg_wallet_box}>
+                            <Text style={styles.bg_wallet_title}>我的钱包</Text>
+                            <Text style={styles.bg_wallet}>￥ 123234</Text>
+                        </ImageBackground>
+                    </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.bottom_box}>
