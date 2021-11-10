@@ -3,7 +3,7 @@ import {View} from "react-native";
 import styles from "./FILE_NAME.styles";
 import FILE_NAMEProp from "./FILE_NAME.props";
 
-function FILE_NAME({navigation, route}: any) {
+function FILE_NAME({navigation, route = {}}: any) {
 
     const params = route.params as FILE_NAMEProp;
 

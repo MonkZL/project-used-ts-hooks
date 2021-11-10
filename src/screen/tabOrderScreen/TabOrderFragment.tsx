@@ -1,5 +1,5 @@
 import React from "react";
-import {FlatList, ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, ListRenderItem, ListRenderItemInfo, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {Route, SceneRendererProps} from "react-native-tab-view/src/types";
 import {Size, WINDOW_WIDTH} from "../../tools/WindowTools";
 import {LocalOrderDataFilter, ongoingType, OrderData, orderTypes} from "../../dataBean/OrderData";
