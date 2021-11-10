@@ -9,4 +9,4 @@ import TestApp from "./test/testApp/TestApp";
 
 LogBox.ignoreAllLogs(true)
 
-AppRegistry.registerComponent(appName, () => TestApp);
+AppRegistry.registerComponent(appName, () => App);
